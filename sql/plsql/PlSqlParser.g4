@@ -522,6 +522,7 @@ create_function_body
         | result_cache_clause
         | PIPELINED
         | DETERMINISTIC
+        | IMMUTABLE
     )* (
         ((IS | AS) (DECLARE? seq_of_declare_specs? body | call_spec))
         | aggregate_clause
@@ -698,6 +699,7 @@ procedure_spec
 function_spec
     : FUNCTION identifier ('(' parameter ( ',' parameter)* ')')? RETURN type_spec (
         DETERMINISTIC
+        | IMMUTABLE
         | PIPELINED
         | parallel_enable_clause
         | RESULT_CACHE
@@ -747,6 +749,7 @@ alter_procedure
 function_body
     : FUNCTION identifier ('(' parameter (',' parameter)* ')')? RETURN type_spec (
         PIPELINED
+        | IMMUTABLE
         | DETERMINISTIC
         | invoker_rights_clause
         | parallel_enable_clause
@@ -5923,7 +5926,7 @@ query_block
 
 selected_list
     : '*'
-    | select_list_elements (',' select_list_elements)*
+    | select_list_elements ((','|WIDTH_COMMA) select_list_elements)*
     ;
 
 from_clause
@@ -5936,7 +5939,7 @@ select_list_elements
     ;
 
 table_ref_list
-    : table_ref (',' table_ref)*
+    : table_ref ((','|WIDTH_COMMA) table_ref)*
     ;
 
 // NOTE to PIVOT clause
@@ -6034,8 +6037,8 @@ start_part
     ;
 
 group_by_clause
-    : GROUP BY group_by_elements (',' group_by_elements)* having_clause?
-    | having_clause (GROUP BY group_by_elements (',' group_by_elements)*)?
+    : GROUP BY group_by_elements ((','|WIDTH_COMMA) group_by_elements)* having_clause?
+    | having_clause (GROUP BY group_by_elements ((','|WIDTH_COMMA) group_by_elements)*)?
     ;
 
 group_by_elements
@@ -6124,7 +6127,7 @@ until_part
     ;
 
 order_by_clause
-    : ORDER SIBLINGS? BY order_by_elements (',' order_by_elements)*
+    : ORDER SIBLINGS? BY order_by_elements ((','|WIDTH_COMMA) order_by_elements)*
     ;
 
 order_by_elements
@@ -6239,7 +6242,8 @@ merge_insert_clause
     ;
 
 selected_tableview
-    : (tableview_name | '(' select_statement ')') table_alias?
+    /*: (tableview_name | '(' select_statement ')') table_alias?*/
+    : dml_table_expression_clause table_alias?
     ;
 
 lock_table_statement
@@ -6296,7 +6300,7 @@ dml_table_expression_clause
     ;
 
 table_collection_expression
-    : (TABLE | THE) ('(' subquery ')' | '(' expression ')' outer_join_sign?)
+    : (TABLE | THE | UNNEST | UNNEST_TABLE) ('(' subquery ')' | '(' expression ')' outer_join_sign?)
     ;
 
 subquery_restriction_clause
@@ -6389,7 +6393,7 @@ relational_operator
 
 in_elements
     : '(' subquery ')'
-    | '(' concatenation (',' concatenation)* ')'
+    | '(' concatenation ((','|WIDTH_COMMA) concatenation)* ')'
     | constant
     | bind_variable
     | general_element
@@ -6447,7 +6451,7 @@ unary_expression
     | /*TODO {input.LT(1).getText().equalsIgnoreCase("new") && !input.LT(2).getText().equals(".")}?*/ NEW unary_expression
     | DISTINCT unary_expression
     | ALL unary_expression
-    | /*TODO{(input.LA(1) == CASE || input.LA(2) == CASE)}?*/ case_statement /*[false]*/
+    | /*TODO{(input.LA(1) == CASE || input.LA(2) == CASE)}?*/ case_expression /*[false]*/
     | unary_expression '.' (
         (COUNT | FIRST | LAST | LIMIT)
         | (EXISTS | NEXT | PRIOR) '(' index += expression ')'
@@ -6468,6 +6472,19 @@ implicit_cursor_expression
 
 collection_expression
     : collation_name '(' expression ')' ('.' general_element_part)*
+    ;
+
+case_expression
+    : searched_case_expression
+    | simple_case_expression
+    ;
+
+simple_case_expression
+    : label_declaration? ck1 = CASE expression simple_case_when_part+ case_else_part? END
+    ;
+
+searched_case_expression
+    : label_declaration? ck1 = CASE searched_case_when_part+ case_else_part? END
     ;
 
 case_statement /*TODO [boolean isStatementParameter]
@@ -6806,7 +6823,7 @@ using_element
     ;
 
 collect_order_by_part
-    : ORDER BY concatenation (',' concatenation)*
+    : ORDER BY concatenation ((','|WIDTH_COMMA) concatenation)*
     ;
 
 within_or_over_part
@@ -7150,7 +7167,7 @@ keep_clause
     ;
 
 function_argument
-    : '(' (argument (',' argument)*)? ')' keep_clause?
+    : '(' (argument ((','|WIDTH_COMMA) argument)*)? ')' keep_clause?
     ;
 
 function_argument_analytic
@@ -7451,6 +7468,7 @@ regular_id
     : non_reserved_keywords_pre12c
     | non_reserved_keywords_in_12c
     | non_reserved_keywords_in_18c
+    | non_reserved_keywords_in_gaussdb
     | REGULAR_ID
     | ABSENT
     | A_LETTER
@@ -7474,6 +7492,7 @@ regular_id
     | DELETE
     | DEPRECATE
     | DETERMINISTIC
+    | IMMUTABLE
     | DSINTERVAL_UNCONSTRAINED
     | DURATION
     | E_LETTER
@@ -7559,6 +7578,10 @@ regular_id
     | COVAR_
     | ERROR_INDEX
     | ERROR_CODE
+    ;
+
+non_reserved_keywords_in_gaussdb
+    : LANGUAGE
     ;
 
 non_reserved_keywords_in_18c

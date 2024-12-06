@@ -1377,9 +1377,9 @@ POOL_2K                        : 'POOL_2K';
 POOL_32K                       : 'POOL_32K';
 POOL_4K                        : 'POOL_4K';
 POOL_8K                        : 'POOL_8K';
-POSITION                       : 'POSITION';
 POSITIVEN                      : 'POSITIVEN';
 POSITIVE                       : 'POSITIVE';
+POSITION                       : 'POSITION';
 POST_TRANSACTION               : 'POST_TRANSACTION';
 POWERMULTISET_BY_CARDINALITY   : 'POWERMULTISET_BY_CARDINALITY';
 POWERMULTISET                  : 'POWERMULTISET';
@@ -2134,6 +2134,7 @@ UNNEST_INNERJ_DISTINCT_VIEW    : 'UNNEST_INNERJ_DISTINCT_VIEW';
 UNNEST_NOSEMIJ_NODISTINCTVIEW  : 'UNNEST_NOSEMIJ_NODISTINCTVIEW';
 UNNEST_SEMIJ_VIEW              : 'UNNEST_SEMIJ_VIEW';
 UNNEST                         : 'UNNEST';
+UNNEST_TABLE                   : 'UNNEST_TABLE';
 UNPACKED                       : 'UNPACKED';
 UNPIVOT                        : 'UNPIVOT';
 UNPLUG                         : 'UNPLUG';
@@ -2459,6 +2460,7 @@ SOLIDUS         : '/';
 AT_SIGN         : '@';
 ASSIGN_OP       : ':=';
 HASH_OP         : '#';
+WIDTH_COMMA : '\uFF0C';
 
 SQ: '\'';
 
@@ -2507,8 +2509,9 @@ REGULAR_ID: SIMPLE_LETTER (SIMPLE_LETTER | '$' | '_' | '#' | [0-9])*;
 
 INQUIRY_DIRECTIVE: '$$' (SIMPLE_LETTER | '_')+;
 
-SPACES: [ \t\r\n]+ -> channel(HIDDEN);
+SPACES: ([ \t\r\n]+ |'\u3000')-> channel(HIDDEN);
 
+PG_META_CMD  : '\\Q'                     -> channel(HIDDEN);
 // Fragment rules
 
 fragment NEWLINE_EOF    : NEWLINE | EOF;

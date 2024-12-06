@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ".fake", ".fake.csproj", "{36E3FC77-3D0A-463E-9290-484B5059CD79}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_scripts", "_scripts", "{E4070637-635D-49B6-AC40-E7A6D5F84E01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{5A42771E-B5F2-41B1-A1FE-F4DCA98E099C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Other", "_scripts\templates\CSharp\Other.csproj", "{9CEA13CA-39FE-4BDA-83A8-C1E7FCE1F65F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36E3FC77-3D0A-463E-9290-484B5059CD79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36E3FC77-3D0A-463E-9290-484B5059CD79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36E3FC77-3D0A-463E-9290-484B5059CD79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36E3FC77-3D0A-463E-9290-484B5059CD79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CEA13CA-39FE-4BDA-83A8-C1E7FCE1F65F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CEA13CA-39FE-4BDA-83A8-C1E7FCE1F65F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CEA13CA-39FE-4BDA-83A8-C1E7FCE1F65F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CEA13CA-39FE-4BDA-83A8-C1E7FCE1F65F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5A42771E-B5F2-41B1-A1FE-F4DCA98E099C} = {E4070637-635D-49B6-AC40-E7A6D5F84E01}
+		{9CEA13CA-39FE-4BDA-83A8-C1E7FCE1F65F} = {5A42771E-B5F2-41B1-A1FE-F4DCA98E099C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F7C87F3-C390-416B-9068-1DED2689E187}
+	EndGlobalSection
+EndGlobal
